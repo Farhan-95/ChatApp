@@ -1,3 +1,4 @@
+import 'package:chat_app/core/routes/app_routes.dart';
 import 'package:chat_app/core/theme/app_theme.dart';
 import 'package:chat_app/view/screens/home/home.dart';
 import 'package:chat_app/view_model/theme_provider.dart';
@@ -24,7 +25,8 @@ class MyApp extends StatelessWidget {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return MaterialApp(
       title: 'Chat App',
-      home: Home(),
+      initialRoute: AppRoutes.home,
+      onGenerateRoute: AppRoutes.generateRoute,
       theme: themeProvider.isDark ? darkTheme : lightTheme,
     );
   }

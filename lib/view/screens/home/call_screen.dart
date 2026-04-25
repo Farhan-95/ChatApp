@@ -1,46 +1,32 @@
-import 'package:chat_app/core/routes/app_routes.dart';
+import 'package:chat_app/view/widgets/custom_app_bar.dart';
 import 'package:chat_app/view/widgets/custom_floating_action_button.dart';
-import 'package:chat_app/view_model/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ChatScreen extends StatefulWidget {
-  const ChatScreen({super.key});
+import '../../../core/routes/app_routes.dart';
+import '../../../view_model/theme_provider.dart';
+
+class CallScreen extends StatefulWidget {
+  const CallScreen({super.key});
 
   @override
-  State<ChatScreen> createState() => _ChatScreenState();
+  State<CallScreen> createState() => _CallScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+class _CallScreenState extends State<CallScreen> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: themeProvider.isDark ? Colors.black : Colors.white,
-        title: Text(
-          'ChatApp',
-          style: TextStyle(
-            color: themeProvider.appColor,
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+      appBar: CustomAppBar(
+        title: 'Calls',
         actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.pushNamed(
-                context,
-                AppRoutes.camera,
-              );
-            },
-            icon: Icon(Icons.camera_alt_outlined),
-          ),
-          PopupMenuButton<int>(
+          IconButton(onPressed: () {}, icon: Icon(Icons.search)),
+          PopupMenuButton(
             onSelected: (value){
               if(value == 0){
               }
-              else if(value == 1){
+              else{
                 Navigator.pushNamed(context, AppRoutes.setting);
               }
             },
@@ -51,14 +37,14 @@ class _ChatScreenState extends State<ChatScreen> {
                 PopupMenuItem(
                   value: 0,
                   child: Text(
-                    'Profile',
+                    'Clear call log',
                     style: TextStyle(
                       color: themeProvider.isDark ? Colors.white : Colors.black,
                     ),
                   ),
                 ),
                 PopupMenuItem(
-                  value: 1,
+                  value : 1,
                   child: Text(
                     'Settings',
                     style: TextStyle(
@@ -70,19 +56,9 @@ class _ChatScreenState extends State<ChatScreen> {
             },
           ),
         ],
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(60),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: SearchBar(
-              leading: Icon(Icons.search, color: Colors.black26),
-              hintText: "Search...",
-            ),
-          ),
-        ),
       ),
       floatingActionButton: CustomFloatingActionButton(
-        icon: Icon(Icons.add),
+        icon: Icon(Icons.add_call),
         action: () {},
       ),
     );

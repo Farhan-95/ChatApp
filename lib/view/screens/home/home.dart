@@ -1,8 +1,12 @@
 import 'package:chat_app/view/screens/home/chat_screen.dart';
+import 'package:chat_app/view/screens/home/group_screen.dart';
+import 'package:chat_app/view/screens/home/status_screen.dart';
 import 'package:chat_app/view_model/theme_provider.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'call_screen.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -19,7 +23,7 @@ List<Widget> icons = [
 ];
  int screenIndex = 0;
 
- List<Widget> screensList = [ChatScreen(),ChatScreen(),ChatScreen(),ChatScreen()];
+ List<Widget> screensList = [ChatScreen(),GroupScreen(),StatusScreen(),CallScreen()];
 
 class _HomeState extends State<Home> {
   @override
@@ -30,7 +34,7 @@ class _HomeState extends State<Home> {
       bottomNavigationBar: CurvedNavigationBar(
         items: icons,
         index: screenIndex,
-        backgroundColor: Color(0xff3aaa35),
+        backgroundColor: themProvider.appColor,
         buttonBackgroundColor: themProvider.isDark?Colors.black:Colors.white,
         color:themProvider.isDark?Colors.black:Colors.white,
         animationCurve: Curves.decelerate,
