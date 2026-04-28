@@ -17,6 +17,7 @@ class ThemeProvider extends ChangeNotifier{
 
   void toggleTheme()async{
     _isDark = !_isDark;
+    setThemeSP();
     notifyListeners();
   }
 

@@ -1,3 +1,3 @@
  import 'dart:ui';
 
-Color color = Color(0xff3aaa35);
+const Color color = Color(0xff3aaa35);
