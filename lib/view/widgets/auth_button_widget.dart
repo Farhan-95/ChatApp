@@ -1,25 +1,24 @@
+import 'package:chat_app/view_model/theme_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../../core/constants.dart';
 
 class AuthButtonWidget extends StatelessWidget {
   const AuthButtonWidget({super.key,required this.title, required this.onPressed});
 
-  final String title;
+  final Widget title;
   final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return  ElevatedButton(
       style: ElevatedButton.styleFrom(
-          backgroundColor: color,
+          backgroundColor: themeProvider.appColor,
           fixedSize: Size(320, 60)
       ),
       onPressed: onPressed,
-      child: Text(
-        title,
-        style: TextStyle(fontSize: 20, color: Colors.white),
-      ),
+      child: title
     );
   }
 }

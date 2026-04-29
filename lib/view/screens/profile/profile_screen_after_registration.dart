@@ -120,7 +120,10 @@ class _ProfileScreenAfterRegistrationState
             ),
             Spacer(),
             AuthButtonWidget(
-              title: 'Next',
+              title:Text(
+                'Next',
+                style: TextStyle(fontSize: 20, color: Colors.white),
+              ),
               onPressed: () {
                 Navigator.pushReplacementNamed(context, AppRoutes.home);
               },

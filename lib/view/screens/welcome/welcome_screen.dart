@@ -59,7 +59,10 @@ class WelcomeScreen extends StatelessWidget {
             ),
             Spacer(),
             AuthButtonWidget(
-              title: 'Agree and Continue',
+              title: Text(
+                'Agree and Continue',
+                style: TextStyle(fontSize: 20, color: Colors.white),
+              ),
               onPressed: () {
                 Navigator.pushReplacementNamed(context, AppRoutes.onBoard);
               },

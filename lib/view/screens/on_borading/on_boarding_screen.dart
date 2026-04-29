@@ -29,7 +29,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       await Permission.location.request();
       await Permission.microphone.request();
 
-      Navigator.pushNamed(context, AppRoutes.phoneAuth);
+      Navigator.pushNamed(context, AppRoutes.signUp);
     }
   }
 
@@ -99,8 +99,14 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             ),
             AuthButtonWidget(
               title: pageIndex < onBoardItems.length - 1
-                  ? 'Next'
-                  : 'Get Started',
+                  ? Text(
+                      'Next',
+                      style: TextStyle(fontSize: 20, color: Colors.white),
+                    )
+                  : Text(
+                      'Get Started',
+                      style: TextStyle(fontSize: 20, color: Colors.white),
+                    ),
               onPressed: getStarted,
             ),
           ],

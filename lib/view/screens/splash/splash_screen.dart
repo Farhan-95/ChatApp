@@ -1,6 +1,9 @@
+import 'package:chat_app/core/routes/app_routes.dart';
+import 'package:chat_app/view_model/auth_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../core/routes/app_routes.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -16,9 +19,17 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
   }
 
+
   void next()async{
-    await Future.delayed(Duration(seconds: 7));
-    Navigator.pushReplacementNamed(context, AppRoutes.welcome);
+    SharedPreferences sp  = await SharedPreferences.getInstance();
+     bool isFirstTime = sp.getBool('isFirstTime')??true;
+     if(isFirstTime){
+       Navigator.pushNamedAndRemoveUntil(context, AppRoutes.welcome, (routes) => false);
+     }else{
+       WidgetsBinding.instance.addPostFrameCallback((_) {
+         Provider.of<AuthViewModel>(context, listen: false).isLoggedIn(context);
+       });
+     }
   }
   @override
   Widget build(BuildContext context) {
