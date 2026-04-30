@@ -1,10 +1,10 @@
 import 'package:chat_app/view/screens/auth/sign_up_screen.dart';
 import 'package:chat_app/view/screens/profile/profile_screen_after_registration.dart';
 import 'package:chat_app/view/screens/auth/sign_in_screen.dart';
-import 'package:chat_app/view/screens/home/camera_screen.dart';
-import 'package:chat_app/view/screens/home/capture_image_screen.dart';
+import 'package:chat_app/view/screens/home/camera_capture_image_screen/camera_screen.dart';
+import 'package:chat_app/view/screens/home/camera_capture_image_screen/capture_image_screen.dart';
 import 'package:chat_app/view/screens/home/home.dart';
-import 'package:chat_app/view/screens/home/setting_screen.dart';
+import 'package:chat_app/view/screens/home/setting_screen/setting_screen.dart';
 import 'package:chat_app/view/screens/splash/splash_screen.dart';
 import 'package:chat_app/view/screens/welcome/welcome_screen.dart';
 import 'package:flutter/material.dart';

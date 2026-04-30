@@ -18,11 +18,10 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  AuthViewModel authViewModel = AuthViewModel();
   GlobalKey<FormState> formKey = GlobalKey();
 
-  bool isCloseIcon = true ;
-  bool isPasswordHide = true ;
+  bool isCloseIcon = true;
+  bool isPasswordHide = true;
 
   @override
   void dispose() {
@@ -31,23 +30,24 @@ class _SignInScreenState extends State<SignInScreen> {
     super.dispose();
   }
 
-  void verification() {
-      if(formKey.currentState!.validate()){
-        Navigator.pushNamed(context, AppRoutes.home);
-      }
-  }
 
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       appBar: AppBar(
-        leading: BackButton(color: themeProvider.isDark?Colors.white:Colors.black,),
-        backgroundColor: themeProvider.isDark?Colors.black:Colors.white,
+        leading: BackButton(
+          color: themeProvider.isDark ? Colors.white : Colors.black,
+        ),
+        backgroundColor: themeProvider.isDark ? Colors.black : Colors.white,
         centerTitle: true,
         title: Text(
           'Log In with your account',
-          style: TextStyle(color: themeProvider.appColor, fontSize: 20,fontWeight: FontWeight.bold),
+          style: TextStyle(
+            color: themeProvider.appColor,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
       body: Padding(
@@ -56,7 +56,6 @@ class _SignInScreenState extends State<SignInScreen> {
           key: formKey,
           child: Column(
             children: [
-              SizedBox(height: 10),
               Text(
                 'ChatApp will need to verify you.',
                 style: TextStyle(
@@ -64,17 +63,15 @@ class _SignInScreenState extends State<SignInScreen> {
                   fontSize: 15,
                 ),
               ),
-              SizedBox(height: 50),
+              SizedBox(height: 20),
               SizedBox(
                 height: 60,
                 width: 280,
-                child:CustomInputField(
-                  onChanged: (value){
-                    if(emailController.text.isNotEmpty){
-                      setState(() {
-                        isCloseIcon = false;
-                      });
-                    }
+                child: CustomInputField(
+                  onChanged: (value) {
+                    setState(() {
+                      isCloseIcon = value.isEmpty;
+                    });
                   },
                   focus: true,
                   controller: emailController,
@@ -83,34 +80,39 @@ class _SignInScreenState extends State<SignInScreen> {
                     Icons.mail,
                     color: themeProvider.isDark ? Colors.white : Colors.black,
                   ),
-                  suffixIcon: isCloseIcon?SizedBox():InkWell(
-                    onTap: (){
-                      emailController.clear();
-                      setState(() {
-                        isCloseIcon = true;
-                      });
-                    },
-                    child: Icon(
-                      Icons.clear,
-                      color: themeProvider.isDark ? Colors.white : Colors.black,
-                    ),
-                  ),
-                  label: ''
+                  suffixIcon: isCloseIcon
+                      ? SizedBox()
+                      : InkWell(
+                          onTap: () {
+                            emailController.clear();
+                            setState(() {
+                              isCloseIcon = true;
+                            });
+                          },
+                          child: Icon(
+                            Icons.clear,
+                            color: themeProvider.isDark
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                        ),
+                  label:
+                      ''
                       'Email',
                   hint: 'Enter your mail',
                   obSecure: false,
-                  validator: (value){
-                    if(value!.isEmpty){
+                  validator: (value) {
+                    if (value!.isEmpty) {
                       return 'email is required';
                     }
-                    if(!value.contains('@gmail.com')){
+                    if (!value.contains('@gmail.com')) {
                       return 'Please enter the valid email';
                     }
                     return null;
                   },
                 ),
               ),
-              SizedBox(height: 15,),
+              SizedBox(height: 15),
               SizedBox(
                 height: 60,
                 width: 280,
@@ -122,46 +124,96 @@ class _SignInScreenState extends State<SignInScreen> {
                     color: themeProvider.isDark ? Colors.white : Colors.black,
                   ),
                   suffixIcon: InkWell(
-                    onTap: (){
+                    onTap: () {
                       setState(() {
                         isPasswordHide = !isPasswordHide;
                       });
                     },
-                    child: isPasswordHide ?Icon(
-                      Icons.remove_red_eye,
-                      color: themeProvider.isDark ? Colors.white : Colors.black,
-                    ):Icon(Icons.visibility_off),
+                    child: isPasswordHide
+                        ? Icon(
+                            Icons.remove_red_eye,
+                            color: themeProvider.isDark
+                                ? Colors.white
+                                : Colors.black,
+                          )
+                        : Icon(Icons.visibility_off),
                   ),
                   label: 'Password',
                   hint: 'Enter your password',
                   obSecure: isPasswordHide,
-                  validator: (value){
-                    if(value!.isEmpty){
+                  validator: (value) {
+                    if (value!.isEmpty) {
                       return 'Password is required';
                     }
-                    if(value.length < 6){
+                    if (value.length < 6) {
                       return 'password is greater than 5 characters';
                     }
                     return null;
                   },
                 ),
               ),
-              Row(mainAxisAlignment: .center,children: [
-                Text("Don't have account",style: TextStyle(color: themeProvider.isDark?Colors.white:Colors.black),),
-                TextButton(onPressed: (){Navigator.pop(context);}, child: Text('Sign Up',style: TextStyle(color: themeProvider.appColor,),)),
-              ],),
-              Spacer(),
-              AuthButtonWidget(
-                title: authViewModel.isLoading
-                    ? CircularProgressIndicator(color: Colors.white)
-                    : Text(
-                  'Sign In',
-                  style: TextStyle(fontSize: 20, color: Colors.white),
-                ),
-                onPressed: () {
-                  verification();
-                },
+              Row(
+                children: [
+                  SizedBox(width: 175),
+                  TextButton(
+                    onPressed: () {},
+                    child: Text(
+                      'Forgot Password',
+                      style: TextStyle(color: themeProvider.appColor),
+                    ),
+                  ),
+                ],
               ),
+              Row(
+                mainAxisAlignment: .center,
+                children: [
+                  Text(
+                    "Don't have account",
+                    style: TextStyle(
+                      color: themeProvider.isDark ? Colors.white : Colors.black,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, AppRoutes.signUp);
+                    },
+                    child: Text(
+                      'Sign Up',
+                      style: TextStyle(color: themeProvider.appColor),
+                    ),
+                  ),
+                ],
+              ),
+              Spacer(),
+              Consumer<AuthViewModel>(builder: (context, authViewModel,child){
+                return AuthButtonWidget(
+                  title: authViewModel.isLoading
+                      ? CircularProgressIndicator(color: Colors.white)
+                      : Text(
+                    'Sign In',
+                    style: TextStyle(fontSize: 20, color: Colors.white),
+                  ),
+                  onPressed: () async{
+                    if (formKey.currentState!.validate()) {
+                      bool success = await authViewModel.signIn(
+                        emailController.text.trim(),
+                        passwordController.text.trim(),
+                      );
+                      if (success) {
+                        Navigator.pushReplacementNamed(context, AppRoutes.home);
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(authViewModel.errorMessage.toString()),
+                            behavior: SnackBarBehavior.floating,
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
+                    }
+                  },
+                );
+              }),
               SizedBox(height: 15),
             ],
           ),

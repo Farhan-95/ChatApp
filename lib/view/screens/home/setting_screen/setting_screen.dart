@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/utils/app_color_picker.dart';
-import '../../../view_model/theme_provider.dart';
+import '../../../../core/utils/app_color_picker.dart';
+import '../../../../view_model/theme_provider.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});

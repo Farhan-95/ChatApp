@@ -4,6 +4,7 @@ import 'package:chat_app/view/widgets/auth_button_widget.dart';
 import 'package:chat_app/view/widgets/on_board_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/routes/app_routes.dart';
 
@@ -29,7 +30,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       await Permission.location.request();
       await Permission.microphone.request();
 
-      Navigator.pushNamed(context, AppRoutes.signUp);
+      SharedPreferences sp = await SharedPreferences.getInstance();
+      sp.setBool('isFirstTime', false);
+
+      Navigator.pushNamedAndRemoveUntil(context, AppRoutes.signIn,(route)=> false);
     }
   }
 

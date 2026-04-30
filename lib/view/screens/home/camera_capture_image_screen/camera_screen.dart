@@ -2,10 +2,10 @@ import 'package:chat_app/core/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:provider/provider.dart';
-import '../../../data/services/camera_service/camera_service.dart';
-import '../../../view_model/theme_provider.dart';
-import '../../widgets/custom_capture_button.dart';
-import '../../widgets/custom_chip.dart';
+import '../../../../data/services/camera_service/camera_service.dart';
+import '../../../../view_model/theme_provider.dart';
+import '../../../widgets/custom_capture_button.dart';
+import '../../../widgets/custom_chip.dart';
 
 class MobileCameraScreen extends StatefulWidget {
   const MobileCameraScreen({super.key});

@@ -2,41 +2,60 @@ import 'package:chat_app/data/repositories/auth_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../core/routes/app_routes.dart';
 
 class AuthViewModel extends ChangeNotifier {
-
   AuthRepository auth_repo = AuthRepository();
   bool isLoading = false;
-  String errorMessage = '';
+  String? errorMessage;
 
-  void isLoggedIn(BuildContext context){
-    bool isUserLoggedIn = auth_repo.currentUser();
-    if(isUserLoggedIn == true){
-      Navigator.pushNamedAndRemoveUntil(context, AppRoutes.home,(route) => false);
-    }
-    else{
-      Navigator.pushNamedAndRemoveUntil(context, AppRoutes.signUp, (route) => false);
-    }
-  }
-
-  void phoneVerificationProcess(String phone, Function() navigate){
-  isLoading = true;
-  notifyListeners();
-  try{
-    auth_repo.sendOTP(phone, (id){
-      isLoading = false;
-      navigate();
-    });
-  }
-  catch(e){
-    isLoading = false;
-    errorMessage = e.toString();
+  Future<bool> emailVerificationProcess(String email, String password) async {
+    isLoading = true;
+    errorMessage = null;
     notifyListeners();
+
+    try {
+      final response = await auth_repo.sendRequestUserCreation(email, password);
+
+      if (response.user != null) {
+        isLoading = false;
+        notifyListeners();
+        return true;
+      } else {
+        errorMessage = "User creation failed";
+        isLoading = false;
+        notifyListeners();
+        return false;
+      }
+    } catch (e) {
+      errorMessage = e.toString();
+      isLoading = false;
+      notifyListeners();
+      return false;
+    }
   }
 
+  Future<bool> signIn(String email, String password) async {
+    isLoading = true;
+    errorMessage = null;
+    notifyListeners();
 
+    try {
+      final response = await auth_repo.signIn(email, password);
+      if (response.user != null) {
+        isLoading = false;
+        notifyListeners();
+        return true;
+      } else {
+        errorMessage = 'Login failed';
+        isLoading = false;
+        notifyListeners();
+        return false;
+      }
+    } catch (e) {
+      errorMessage = e.toString();
+      isLoading = false;
+      notifyListeners();
+      return false;
+    }
   }
-
-
 }

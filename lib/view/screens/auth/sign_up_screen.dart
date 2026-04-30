@@ -18,24 +18,16 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  AuthViewModel authViewModel = AuthViewModel();
-
   GlobalKey<FormState> formKey = GlobalKey();
 
-  bool isIconClose = true ;
-  bool isPasswordHide = true ;
+  bool isIconClose = true;
+  bool isPasswordHide = true;
 
   @override
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
-  }
-
-  void verification() {
-    if(formKey.currentState!.validate()){
-      Navigator.pushNamed(context, AppRoutes.profileAfterVerification);
-    }
   }
 
   @override
@@ -76,12 +68,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 height: 60,
                 width: 280,
                 child: CustomInputField(
-                  onChanged: (value){
-                    if(emailController.text.isNotEmpty){
+                  onChanged: (value) {
                       setState(() {
-                        isIconClose = false;
+                        isIconClose = value.isEmpty;
                       });
-                    }
                   },
                   focus: true,
                   controller: emailController,
@@ -90,27 +80,32 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     Icons.mail,
                     color: themeProvider.isDark ? Colors.white : Colors.black,
                   ),
-                  suffixIcon: isIconClose?SizedBox.shrink():InkWell(
-                    onTap: (){
-                      emailController.clear();
-                      setState(() {
-                        isIconClose = true;
-                      });
-                    },
-                    child: Icon(
-                      Icons.clear,
-                      color: themeProvider.isDark ? Colors.white : Colors.black,
-                    ),
-                  ),
-                  label: ''
+                  suffixIcon: isIconClose
+                      ? SizedBox.shrink()
+                      : InkWell(
+                          onTap: () {
+                            emailController.clear();
+                            setState(() {
+                              isIconClose = true;
+                            });
+                          },
+                          child: Icon(
+                            Icons.clear,
+                            color: themeProvider.isDark
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                        ),
+                  label:
+                      ''
                       'Email',
                   hint: 'Enter your mail',
                   obSecure: false,
-                  validator: (value){
-                    if(value!.isEmpty){
+                  validator: (value) {
+                    if (value!.isEmpty) {
                       return 'email is required';
                     }
-                    if(!value.contains('@gmail.com')){
+                    if (!value.contains('@gmail.com')) {
                       return 'Please enter the valid email';
                     }
                     return null;
@@ -129,24 +124,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     color: themeProvider.isDark ? Colors.white : Colors.black,
                   ),
                   suffixIcon: InkWell(
-                    onTap: (){
+                    onTap: () {
                       setState(() {
                         isPasswordHide = !isPasswordHide;
                       });
                     },
-                    child: isPasswordHide ?Icon(
-                      Icons.remove_red_eye,
-                      color: themeProvider.isDark ? Colors.white : Colors.black,
-                    ):Icon(Icons.visibility_off),
+                    child: isPasswordHide
+                        ? Icon(
+                            Icons.remove_red_eye,
+                            color: themeProvider.isDark
+                                ? Colors.white
+                                : Colors.black,
+                          )
+                        : Icon(Icons.visibility_off),
                   ),
                   label: 'Password',
                   hint: 'Enter your password',
                   obSecure: isPasswordHide,
-                  validator: (value){
-                    if(value!.isEmpty){
+                  validator: (value) {
+                    if (value!.isEmpty) {
                       return 'Password is required';
                     }
-                    if(value.length < 6){
+                    if (value.length < 6) {
                       return 'password is greater than 5 characters';
                     }
                     return null;
@@ -174,18 +173,42 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ],
               ),
               Spacer(),
-              AuthButtonWidget(
-                title: authViewModel.isLoading
-                    ? CircularProgressIndicator(color: Colors.white)
-                    : Text(
-                        'Sign Up',
-                        style: TextStyle(fontSize: 20, color: Colors.white),
-                      ),
-                onPressed: () {
-                  verification();
-                },
-              ),
-              SizedBox(height: 15),
+              Consumer<AuthViewModel>(builder: (context,authViewModel,child){
+                return AuthButtonWidget(
+                  title: authViewModel.isLoading
+                      ? CircularProgressIndicator(color: Colors.white)
+                      : Text(
+                    'Sign Up',
+                    style: TextStyle(fontSize: 20, color: Colors.white),
+                  ),
+                  onPressed: () async{
+                    if (!(formKey.currentState?.validate() ?? false)) return;
+
+                    bool result = await authViewModel.emailVerificationProcess(
+                      emailController.text.trim(),
+                      passwordController.text.trim(),
+                    );
+                    if (result) {
+                      if (!mounted) return;
+
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        AppRoutes.profileAfterVerification,
+                            (route) => false,
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(authViewModel.errorMessage?? 'Something went wrong'),
+                          backgroundColor: Colors.red,
+                          behavior: SnackBarBehavior.floating,
+                        ),
+                      );
+                    }
+                  },
+                );
+              }),
+              SizedBox(height: 8),
             ],
           ),
         ),
